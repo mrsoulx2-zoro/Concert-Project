@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MicSet</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="Images/MicSet.png" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --dark: #0a0a0a;
+            --primary: #ff0055;
+            --secondary: #081122;
+            --white: #ffffff;
+            --gray: #cfcfcf;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--secondary);
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+        }
+
+        .navbar {
+            background: #000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+            animation: slideDown 1s ease;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            position: relative;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 0;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .drop-btn {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .drop-btn i {
+            font-size: 12px;
+            transition: 0.3s;
+        }
+
+        .dropdown-content {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 260px;
+            background: var(--dark);
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            padding: 10px 0;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(15px);
+            transition: 0.4s ease;
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 12px 20px;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background: #1a1a1a;
+            color: var(--primary);
+            padding-left: 25px;
+        }
+
+        .dropdown:hover .dropdown-content,
+        .dropdown:focus-within .dropdown-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown:hover .drop-btn i,
+        .dropdown:focus-within .drop-btn i {
+            transform: rotate(180deg);
+        }
+
+        .sign-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            background: var(--primary);
+            color: #fff;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .sign-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 0, 85, 0.3);
+        }
+
+        .booking-section {
+            max-width: 1300px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .booking-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .booking-form,
+        .booking-content {
+            animation: fadeUp 1s ease;
+        }
+
+        .booking-content {
+            animation-delay: 0.2s;
+            animation-fill-mode: both;
+        }
+
+        .booking-form {
+            background: #111;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .booking-form h2 {
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+        }
+
+        .booking-form h2 span,
+        .booking-content h1 span {
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+            animation: fadeUp 0.8s ease;
+            animation-fill-mode: both;
+        }
+
+        .form-group:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .form-group:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .form-group:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+
+        .form-group:nth-child(5) {
+            animation-delay: 0.4s;
+        }
+
+        .form-group:nth-child(6) {
+            animation-delay: 0.5s;
+        }
+
+        .form-group:nth-child(7) {
+            animation-delay: 0.6s;
+        }
+
+        .form-group:nth-child(8) {
+            animation-delay: 0.7s;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 16px;
+            background: #1b1b1b;
+            border: 1px solid #333;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(255, 0, 85, 0.12);
+        }
+
+        .form-group textarea {
+            resize: none;
+            min-height: 100px;
+        }
+
+        .book-btn {
+            width: 100%;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            animation: zoomIn 1s ease 0.8s;
+            animation-fill-mode: both;
+        }
+
+        .book-btn:hover {
+            background: #e00045;
+            transform: translateY(-2px);
+        }
+
+        .booking-content h1 {
+            font-size: 3.2rem;
+            line-height: 1.3;
+            margin-bottom: 20px;
+        }
+
+        .booking-content p {
+            color: var(--gray);
+            line-height: 1.9;
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+        }
+
+        .features {
+            margin-top: 30px;
+        }
+
+        .features p {
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        .features i {
+            color: var(--primary);
+            margin-right: 10px;
+        }
+
+        .footer {
+            background: #000;
+            padding: 60px 20px 20px;
+            margin-top: 60px;
+            animation: fadeUp 1s ease 0.4s;
+            animation-fill-mode: both;
+        }
+
+        .footer-container {
+            max-width: 1300px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-logo {
+            display: inline-block;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo span {
+            color: var(--primary);
+        }
+
+        .footer-box h3 {
+            margin-bottom: 20px;
+        }
+
+        .footer-box p,
+        .footer-box ul li {
+            color: #cfcfcf;
+            line-height: 1.8;
+            list-style: none;
+            margin-bottom: 8px;
+        }
+
+        .footer-box ul li a {
+            transition: 0.3s;
+        }
+
+        .footer-box ul li a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .social-links a {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            transition: 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-4px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #222;
+            color: #999;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.85);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .booking-container {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-content {
+                order: -1;
+                text-align: center;
+            }
+
+            .booking-content h1 {
+                font-size: 2.4rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .booking-form {
+                padding: 25px;
+            }
+
+            .booking-form h2 {
+                font-size: 1.8rem;
+            }
+
+            .booking-content h1 {
+                font-size: 2rem;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.8rem;
+            }
+
+            .booking-form {
+                padding: 20px;
+            }
+
+            .booking-content h1 {
+                font-size: 1.7rem;
+            }
+
+            .booking-content p {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">Mic<span>Set</span></a>
+
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+
+            <div class="dropdown">
+                <button class="drop-btn" type="button">
+                    Singers <i class="fa-solid fa-chevron-down"></i>
+                </button>
+
+                <div class="dropdown-content">
+                    <a href="#">AR Rahman</a>
+                    <a href="#">Anirudh Ravichandar</a>
+                    <a href="#">Yuvan Shankar Raja</a>
+                    <a href="#">Sai Abhyankkar</a>
+                    <a href="#">Harris Jayaraj</a>
+                    <a href="#">HipHop Tamizha Adhi</a>
+                    <a href="#">GV Prakash Kumar</a>
+                    <a href="#">Sean Roldan</a>
+                </div>
+            </div>
+
+            <a href="#">About Us</a>
+            <a href="#">Contact Us</a>
+        </div>
+
+        <a href="#"><button class="sign-btn">Sign In</button></a>
+    </nav>
+
+    <section class="booking-section">
+        <div class="booking-container">
+
+            <div class="booking-form">
+                <h2>Book <span>Tickets</span></h2>
+
+                <div class="form-group">
+                    <input type="text" placeholder="First Name" required>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" placeholder="Last Name" required>
+                </div>
+
+                <div class="form-group">
+                    <input type="email" placeholder="Email Address" required>
+                </div>
+
+                <div class="form-group">
+                    <input type="tel" placeholder="Phone Number" required>
+                </div>
+
+                <div class="form-group">
+                    <select required>
+                        <option value="" disabled selected>Select Singer</option>
+                        <option>AR Rahman</option>
+                        <option>Anirudh Ravichandar</option>
+                        <option>Yuvan Shankar Raja</option>
+                        <option>Sai Abhyankkar</option>
+                        <option>Harris Jayaraj</option>
+                        <option>HipHop Tamizha Adhi</option>
+                        <option>GV Prakash Kumar</option>
+                        <option>Sean Roldan</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <select required>
+                        <option value="" disabled selected>Number of Tickets</option>
+                        <option>1 Ticket</option>
+                        <option>2 Tickets</option>
+                        <option>3 Tickets</option>
+                        <option>4 Tickets</option>
+                        <option>5 Tickets</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <textarea placeholder="Additional Message"></textarea>
+                </div>
+
+                <button class="book-btn">Book Now</button>
+            </div>
+
+            <div class="booking-content">
+                <h1>Feel the Magic of <span>Live Music</span></h1>
+
+                <p>
+                    Experience unforgettable nights filled with music, lights, and world-class performances.
+                    Book your tickets now and enjoy the energy of your favorite artists live on stage.
+                </p>
+
+                <p>
+                    From soulful melodies to electrifying beats, MicSet brings the biggest singers and
+                    the best concert experience to every music lover.
+                </p>
+
+                <div class="features">
+                    <p><i class="fa-solid fa-check"></i> Premium Seating Experience</p>
+                    <p><i class="fa-solid fa-check"></i> Secure Online Booking</p>
+                    <p><i class="fa-solid fa-check"></i> Instant Confirmation</p>
+                    <p><i class="fa-solid fa-check"></i> Top Artists & Performances</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-box">
+                <a href="index.html" class="footer-logo">Mic<span>Set</span></a>
+                <p>
+                    Experience unforgettable live concerts with top artists,
+                    stunning performances, and an electrifying atmosphere.
+                </p>
+            </div>
+
+            <div class="footer-box">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Events</a></li>
+                    <li><a href="#">Artists</a></li>
+                    <li><a href="#">Tickets</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-box">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 MicSet. All Rights Reserved. Designed by Praveen.</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
